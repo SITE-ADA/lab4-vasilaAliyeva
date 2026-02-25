@@ -13,7 +13,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product save(Product product) {
         if (product.getId() == null) {
-            product.setId(UUID.randomUUID());
+            UUID generateId = UUID.randomUUID();
+            product = new Product(
+                    generateId,
+                    product.getProductName(),
+                    product.getPrice(),
+                    product.getExpirationDate()
+            );
         }
         products.put(product.getId(), product);
         return product;

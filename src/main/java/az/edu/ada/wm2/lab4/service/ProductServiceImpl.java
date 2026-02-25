@@ -23,6 +23,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
+        if (product.getId() == null) {
+            product.setId(UUID.randomUUID());
+        }
         return productRepository.save(product);
     }
 
@@ -65,7 +68,9 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductsExpiringBefore(LocalDate date) {
         return productRepository.findAll()
                 .stream()
-                .filter(product -> product.getExpirationDate().isBefore(date))
+                .filter(product ->
+                        product.getExpirationDate() != null &&
+                                product.getExpirationDate().isBefore(date))
                 .collect(Collectors.toList());
     }
 

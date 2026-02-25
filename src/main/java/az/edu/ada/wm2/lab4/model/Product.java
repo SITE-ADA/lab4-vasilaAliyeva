@@ -60,14 +60,4 @@ public class Product {
         return expirationDate;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Product product)) return false;
-        return Objects.equals(id, product.id) && Objects.equals(productName, product.productName) && Objects.equals(price, product.price) && Objects.equals(expirationDate, product.expirationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, productName, price, expirationDate);
-    }
 }

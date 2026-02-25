@@ -2,6 +2,8 @@ package az.edu.ada.wm2.lab4.controller;
 
 import az.edu.ada.wm2.lab4.model.Product;
 import az.edu.ada.wm2.lab4.service.ProductService;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
@@ -35,17 +38,23 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable UUID id, @RequestBody Product product) {
+    public Product updateProduct(@PathVariable UUID id,
+                                 @RequestBody Product product) {
         return productService.updateProduct(id, product);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
     }
 
     @GetMapping("/filter/expiring")
-    public List<Product> getProductsExpiringBefore(@RequestParam("date") LocalDate date) {
+    public List<Product> getProductsExpiringBefore(
+            @RequestParam("date")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date) {
+
         return productService.getProductsExpiringBefore(date);
     }
 
@@ -53,6 +62,12 @@ public class ProductController {
     public List<Product> getProductsByPriceRange(
             @RequestParam("min") BigDecimal min,
             @RequestParam("max") BigDecimal max) {
+
         return productService.getProductsByPriceRange(min, max);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleNotFoundException() {
     }
 }

@@ -13,11 +13,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product save(Product product) {
         if (product.getId() == null) {
-            UUID uuid = UUID.randomUUID();
-            product = new Product(
-                    uuid, product.getProductName(),
-                    product.getPrice(), product.getExpirationDate()
-            );
+            product.setId(UUID.randomUUID());
         }
         products.put(product.getId(), product);
         return product;
@@ -36,6 +32,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void deleteById(UUID id) {
         products.remove(id);
+
     }
 
     @Override

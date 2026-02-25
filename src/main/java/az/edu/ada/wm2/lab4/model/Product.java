@@ -28,6 +28,10 @@ public class Product {
 
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public void setProductName(String productName) {
         this.productName = productName;
     }
